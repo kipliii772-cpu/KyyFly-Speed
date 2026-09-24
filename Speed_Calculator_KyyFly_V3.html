@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Steal and Egg Speed Calculator V2</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;font-family:Arial,sans-serif;color:#fff;
+  background:
+    radial-gradient(circle at 15% 10%,rgba(0,255,255,.22),transparent 28%),
+    radial-gradient(circle at 85% 20%,rgba(170,0,255,.24),transparent 30%),
+    radial-gradient(circle at 50% 100%,rgba(255,0,128,.18),transparent 35%),
+    #080a12;
+  min-height:100vh;
+}
+.wrap{max-width:680px;margin:auto;padding:18px}
+.brand{
+  text-align:center;font-size:38px;font-weight:900;letter-spacing:2px;
+  margin:5px 0 18px;
+  background:linear-gradient(90deg,#00f5ff,#7c4dff,#ff2bd6,#00f5ff);
+  background-size:300% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  text-shadow:0 0 24px rgba(124,77,255,.35);
+  animation:flow 5s linear infinite;
+}
+@keyframes flow{to{background-position:300% 0}}
+.card{
+  background:rgba(18,21,34,.78);border:1px solid rgba(255,255,255,.12);
+  border-radius:20px;padding:19px;margin-bottom:15px;
+  box-shadow:0 12px 40px rgba(0,0,0,.35),0 0 28px rgba(100,60,255,.10);
+  backdrop-filter:blur(12px);
+}
+h1{margin:0 0 6px;font-size:24px}
+.sub{color:#aeb6c9;font-size:14px;margin-bottom:18px}
+label{display:block;margin:13px 0 6px;font-size:14px;color:#dce2f0}
+input,select{
+  width:100%;padding:13px;border-radius:12px;
+  border:1px solid #343a52;background:#0b0e18;color:#fff;font-size:16px;
+  outline:none;transition:.2s;
+}
+input:focus,select:focus{
+  border-color:#00e5ff;box-shadow:0 0 0 3px rgba(0,229,255,.12),0 0 18px rgba(0,229,255,.12)
+}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+button{
+  width:100%;margin-top:18px;padding:14px;border:0;border-radius:13px;
+  color:#fff;font-weight:900;font-size:16px;cursor:pointer;
+  background:linear-gradient(90deg,#00b8ff,#6955ff,#ff2bc2);
+  box-shadow:0 7px 25px rgba(105,85,255,.35);
+}
+button:active{transform:scale(.98)}
+.result-title{font-weight:900;font-size:17px;margin-bottom:5px}
+.row{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.row:last-child{border-bottom:0}
+.row b{color:#7ff7ff}
+.big{font-size:27px!important;color:#ff77e7!important}
+.note{font-size:12px;color:#8f98ad;margin-top:12px;line-height:1.55}
+.badge{
+  display:inline-block;padding:6px 10px;border-radius:999px;
+  background:linear-gradient(90deg,rgba(0,229,255,.16),rgba(255,43,214,.16));
+  border:1px solid rgba(255,255,255,.10);font-size:12px;color:#bdefff
+}
+@media(max-width:520px){.grid{grid-template-columns:1fr}.brand{font-size:32px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="brand">KyyFly</div>
+<div class="card">
+<div class="badge">⚡ SPEED CALCULATOR</div><h1>Steal and Egg</h1>
+<div class="sub">V2 — angka bisa langsung kamu ubah tanpa edit kode.</div>
+
+<label>Speed per step</label>
+<input id="gain" type="text" value="90K" inputmode="text">
+
+<label>Step per detik</label>
+<input id="rate" type="text" value="7.5" inputmode="decimal">
+
+<div class="grid">
+<div>
+<label>Speed sekarang</label>
+<input id="current" type="text" value="35.4B">
+</div>
+<div>
+<label>AFK</label>
+<input id="hours" type="text" value="24">
+</div>
+</div>
+
+<label>Gamepass</label>
+<input id="gp" type="text" value="32">
+
+<label>Treadmill</label>
+<select id="treadmill">
+<option>Angelic</option>
+<option>Demonic</option>
+<option>Hacker</option>
+<option>Lucky Block</option>
+<option>The Freeze</option>
+<option>Golden</option>
+<option>Celebrity</option>
+<option>Flame</option>
+<option>Sci-Fi</option>
+<option>Treadmill</option>
+</select>
+
+<label>Trail / Aura</label>
+<select id="trail">
+<option value="14">Divine ×14</option>
+<option value="20">Moon Bloom ×20</option>
+<option value="10">Eternal ×10</option>
+<option value="7">Secret ×7</option>
+<option value="5">Galaxy ×5</option>
+<option value="4">Red ×4</option>
+<option value="3.5">Golden ×3.5</option>
+<option value="3">Purple ×3</option>
+<option value="2.5">Blue ×2.5</option>
+<option value="2">Green ×2</option>
+<option value="1.5">Gray ×1.5</option>
+</select>
+
+<button onclick="hitung()">HITUNG</button>
+</div>
+
+<div class="card">
+<div class="result-title">📊 HASIL PERHITUNGAN</div>
+<div class="row"><span>Speed / detik</span><b id="perSec">—</b></div>
+<div class="row"><span>Speed / menit</span><b id="perMin">—</b></div>
+<div class="row"><span>Speed / jam</span><b id="perHour">—</b></div>
+<div class="row"><span>Speed dari AFK</span><b id="afk">—</b></div>
+<div class="row"><span>Total speed</span><b class="big" id="total">—</b></div>
+<div class="note">
+Kamu bisa mengetik K, M, B, atau T. Contoh: 14K = 14 ribu, 2.5M = 2,5 juta, 35.4B = 35,4 miliar.
+<br>Catatan: gamepass, treadmill, dan aura sementara ditampilkan sebagai pilihan/data; rumus akhirnya bisa kita sesuaikan setelah mekaniknya dipastikan.
+</div>
+</div>
+</div>
+
+<script>
+function parseNum(v){
+  v=String(v).trim().toUpperCase().replace(/,/g,'.').replace(/\s/g,'');
+  let m=1;
+  if(v.endsWith('K')){m=1e3;v=v.slice(0,-1)}
+  else if(v.endsWith('M')){m=1e6;v=v.slice(0,-1)}
+  else if(v.endsWith('B')){m=1e9;v=v.slice(0,-1)}
+  else if(v.endsWith('T')){m=1e12;v=v.slice(0,-1)}
+  return (parseFloat(v)||0)*m;
+}
+function fmt(n){
+  if(!isFinite(n)) return '—';
+  if(n>=1e12)return (n/1e12).toFixed(3).replace(/\.?0+$/,'')+'T';
+  if(n>=1e9)return (n/1e9).toFixed(3).replace(/\.?0+$/,'')+'B';
+  if(n>=1e6)return (n/1e6).toFixed(3).replace(/\.?0+$/,'')+'M';
+  if(n>=1e3)return (n/1e3).toFixed(3).replace(/\.?0+$/,'')+'K';
+  return Math.round(n).toLocaleString('id-ID');
+}
+function hitung(){
+  const gain=parseNum(document.getElementById('gain').value);
+  const rate=parseNum(document.getElementById('rate').value);
+  const current=parseNum(document.getElementById('current').value);
+  const hours=parseNum(document.getElementById('hours').value);
+  const sec=gain*rate;
+  const min=sec*60;
+  const hour=sec*3600;
+  const afk=hour*hours;
+  document.getElementById('perSec').textContent=fmt(sec);
+  document.getElementById('perMin').textContent=fmt(min);
+  document.getElementById('perHour').textContent=fmt(hour);
+  document.getElementById('afk').textContent=fmt(afk);
+  document.getElementById('total').textContent=fmt(current+afk);
+}
+hitung();
+</script>
+</body>
+</html>
